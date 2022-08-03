@@ -28,7 +28,7 @@ public class OrganizationRepositoryTest {
 
         organizationRepository.save(testOrganization);
 
-        assertEquals(organizationRepository.findAll().size(), 1);
+        assertEquals(1, organizationRepository.findAll().size());
     }
 
     @Test
@@ -55,7 +55,7 @@ public class OrganizationRepositoryTest {
 
         organizationRepository.saveAll(Arrays.asList(testOrganization0, testOrganization1, testOrganization2, testOrganization3));
 
-        assertEquals(organizationRepository.findAll().size(), 4);
+        assertEquals(4, organizationRepository.findAll().size());
     }
 
     @Test
@@ -70,9 +70,9 @@ public class OrganizationRepositoryTest {
         Organization found = organizationRepository.findByOrganizationId(testOrganization0.getOrganizationId());
 
         assertNotNull(found);
-        assertEquals(found.getName(), testOrganization0.getName());
-        assertEquals(found.getOrganizationId(), testOrganization0.getOrganizationId());
-        assertEquals(found.getDescription(), testOrganization0.getDescription());
+        assertEquals(testOrganization0.getName(), found.getName());
+        assertEquals(testOrganization0.getOrganizationId(), found.getOrganizationId());
+        assertEquals(testOrganization0.getDescription(), found.getDescription());
     }
 
     @Test
