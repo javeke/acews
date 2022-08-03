@@ -15,8 +15,7 @@ public class OrganizationDto {
         this.description = "";
     }
 
-    public OrganizationDto(String organizationId, String name, String description) {
-        this.organizationId = organizationId;
+    public OrganizationDto(String name, String description) {
         this.name = name;
         this.description = description;
     }

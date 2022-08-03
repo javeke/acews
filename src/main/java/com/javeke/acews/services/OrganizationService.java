@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class OrganizationService {
@@ -24,11 +25,16 @@ public class OrganizationService {
         this.organizationRepository = organizationRepository;
     }
 
-    public List<Organization> getOrganizations(){
-        return organizationRepository.findAll();
+    public List<OrganizationDto> getOrganizations(){
+
+        return organizationRepository.findAll().stream().map(OrganizationDto::new).collect(Collectors.toList());
     }
 
-    public Organization getOrganizationByOrganizationId(String organizationId){ return organizationRepository.findByOrganizationId(organizationId); }
+    public OrganizationDto getOrganizationByOrganizationId(String organizationId){
+        Organization found =  organizationRepository.findByOrganizationId(organizationId);
+
+        return found == null ? null : new OrganizationDto(found);
+    }
 
     public OrganizationDto addOrganization(OrganizationDto organizationDto){
         String oId = RandomStringUtils.randomAlphabetic(6);
