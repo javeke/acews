@@ -4,15 +4,14 @@ import com.javeke.acews.models.dao.Organization;
 import com.javeke.acews.models.dto.OrganizationDto;
 import com.javeke.acews.models.dto.UpdateOrganizationDto;
 import com.javeke.acews.repositories.IOrganizationRepository;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.BeanUtils;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
@@ -28,9 +27,6 @@ class OrganizationServiceTest {
 
     @BeforeEach
     void setUp(){ this.organizationService = new OrganizationService(this.organizationRepository); }
-
-    @AfterEach
-    void clearDatabase(){ organizationRepository.deleteAll(); }
 
     @Test
     void shouldReturnEmptyListWhenNoOrganizationsExist(){
@@ -73,8 +69,6 @@ class OrganizationServiceTest {
 
     @Test
     void shouldUpdateOrganizationWithParamData(){
-        OrganizationDto organizationDto = new OrganizationDto("testName", "testDescription");
-
         UpdateOrganizationDto updateOrganizationDto = new UpdateOrganizationDto();
         updateOrganizationDto.setName("updateTestName");
         updateOrganizationDto.setDescription("updateDescription");
@@ -86,11 +80,40 @@ class OrganizationServiceTest {
         when(organizationRepository.findByOrganizationId("testId")).thenReturn(organization);
         when(organizationRepository.save(organization)).thenReturn(organization);
 
-
         OrganizationDto updatedResponse = organizationService.updateOrganization(organization.getOrganizationId(), updateOrganizationDto);
 
         assertEquals(organization.getOrganizationId(), updatedResponse.getOrganizationId());
         assertEquals(updateOrganizationDto.getName(), updatedResponse.getName());
         assertEquals(updateOrganizationDto.getDescription(), updatedResponse.getDescription());
+    }
+
+    @Test
+    void shouldUpdateOrganizationWithNonNullParamData(){
+        UpdateOrganizationDto updateOrganizationDto = new UpdateOrganizationDto();
+        updateOrganizationDto.setName("updateTestName");
+
+        Organization  organization = new Organization();
+        organization.setOrganizationId("testId");
+        organization.setName("testName");
+
+        when(organizationRepository.findByOrganizationId("testId")).thenReturn(organization);
+        BeanUtils.copyProperties(updateOrganizationDto, organization);
+        organization.setDescription("testDescription");
+        when(organizationRepository.save(organization)).thenReturn(organization);
+
+        OrganizationDto updatedResponse = organizationService.updateOrganization(organization.getOrganizationId(), updateOrganizationDto);
+
+        assertEquals(organization.getOrganizationId(), updatedResponse.getOrganizationId());
+        assertEquals(updateOrganizationDto.getName(), updatedResponse.getName());
+        assertNotEquals(updateOrganizationDto.getDescription(), updatedResponse.getDescription());
+    }
+
+    @Test
+    void shouldRemoveOrganizationWithOrganizationId() {
+        String organizationId = "testId";
+        when(organizationRepository.deleteByOrganizationId(organizationId)).thenReturn(1);
+
+        boolean isDeleted = organizationService.removeOrganization(organizationId);
+        assertEquals(true, isDeleted);
     }
 }
