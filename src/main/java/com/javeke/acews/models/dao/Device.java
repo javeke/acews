@@ -6,6 +6,7 @@ import org.springframework.data.mongodb.core.mapping.FieldType;
 import org.springframework.data.mongodb.core.mapping.MongoId;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Document("device")
 public class Device {
@@ -21,7 +22,11 @@ public class Device {
     private String status;
     private String type;
 
-    private ArrayList<DeviceData> dataPoints;
+    private List<DeviceData> dataPoints;
+
+    public Device(){
+        this.dataPoints = new ArrayList<>();
+    }
 
     public Device(String id, String name){
         this.id = id;
@@ -92,11 +97,11 @@ public class Device {
         this.type = type;
     }
 
-    public ArrayList<DeviceData> getDataPoints() {
+    public List<DeviceData> getDataPoints() {
         return dataPoints;
     }
 
-    public void setDataPoints(ArrayList<DeviceData> dataPoints) {
+    public void setDataPoints(List<DeviceData> dataPoints) {
         this.dataPoints = dataPoints;
     }
 

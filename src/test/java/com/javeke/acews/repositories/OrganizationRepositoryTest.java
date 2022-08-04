@@ -12,7 +12,7 @@ import java.util.Arrays;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DataMongoTest
-public class OrganizationRepositoryTest {
+class OrganizationRepositoryTest {
     @Autowired
     private IOrganizationRepository organizationRepository;
 
