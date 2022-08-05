@@ -1,0 +1,24 @@
+name: "Builds and pushes the dev image to docker hub repository"
+
+on:
+  push:
+    branches:
+      - dev
+
+jobs:
+  builds:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - run: sudo chmod +x mvnw
+      - name: Clear build cache
+        run: sudo ./mvnw clean
+      - name: Generate JAR file
+        run: sudo ./mvnw -Dspring.mongodb.embedded.version=${{ secrets.MONGODB_VERSION }} package
+      - name: Build Docker Image
+        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/acews-dev:$(cat VERSION) .
+      - name: Login to Docker Hub
+        run: docker login -u '${{ secrets.DOCKER_USERNAME }}' -p '${{ secrets.DOCKER_TOKEN }}'
+      - name: Push Docker Image to Docker hub
+        run: docker push ${{ secrets.DOCKER_USERNAME }}/acews-dev:$(cat VERSION)

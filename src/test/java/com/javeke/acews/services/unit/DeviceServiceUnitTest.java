@@ -1,8 +1,9 @@
-package com.javeke.acews.services;
+package com.javeke.acews.services.unit;
 
 import com.javeke.acews.models.dao.Device;
 import com.javeke.acews.models.dto.DeviceDto;
 import com.javeke.acews.repositories.IDeviceRepository;
+import com.javeke.acews.services.DeviceService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,7 +18,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @ExtendWith(SpringExtension.class)
-class DeviceServiceTest {
+class DeviceServiceUnitTest {
 
     @MockBean
     private IDeviceRepository deviceRepository;
