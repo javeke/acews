@@ -1,9 +1,10 @@
-package com.javeke.acews.services;
+package com.javeke.acews.services.unit;
 
 import com.javeke.acews.models.dao.Organization;
 import com.javeke.acews.models.dto.OrganizationDto;
 import com.javeke.acews.models.dto.UpdateOrganizationDto;
 import com.javeke.acews.repositories.IOrganizationRepository;
+import com.javeke.acews.services.OrganizationService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -18,7 +19,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @ExtendWith(SpringExtension.class)
-class OrganizationServiceTest {
+class OrganizationServiceUnitTest {
 
     @MockBean
     private IOrganizationRepository organizationRepository;
