@@ -1,0 +1,19 @@
+name: "Tests new pull request before allowing to merge"
+
+on:
+  pull_request:
+    branches:
+      - dev
+
+jobs:
+  builds:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - run: sudo chmod +x mvnw
+        name: Make maven executable
+      - name: Clear build cache
+        run: sudo ./mvnw clean
+      - name: Run tests
+        run: sudo ./mvnw test
