@@ -2,6 +2,7 @@ package com.javeke.acews.services.integration;
 
 import com.javeke.acews.models.dao.Organization;
 import com.javeke.acews.models.dto.OrganizationDto;
+import com.javeke.acews.models.dto.UpdateOrganizationDto;
 import com.javeke.acews.repositories.IOrganizationRepository;
 import com.javeke.acews.services.OrganizationService;
 import org.junit.jupiter.api.AfterEach;
@@ -62,5 +63,47 @@ public class OrganizationServiceIntegrationTest {
         assertEquals(addedOrg.getOrganizationId(), found.getOrganizationId());
         assertEquals(addedOrg.getName(), found.getName());
         assertEquals(addedOrg.getDescription(), found.getDescription());
+    }
+
+    @Test
+    void shouldUpdateOrganizationWithUpdateData(){
+        OrganizationDto organizationDto = new OrganizationDto();
+        organizationDto.setName("testName");
+        organizationDto.setDescription("testDescription");
+
+        OrganizationDto addedOrg = organizationService.addOrganization(organizationDto);
+
+        UpdateOrganizationDto updateOrganizationDto = new UpdateOrganizationDto();
+        updateOrganizationDto.setDescription("updateDescription");
+        updateOrganizationDto.setName("updateName");
+
+        OrganizationDto updatedOrganizationDto = organizationService.updateOrganization(addedOrg.getOrganizationId(), updateOrganizationDto);
+
+        assertEquals(updateOrganizationDto.getName(), updatedOrganizationDto.getName());
+        assertEquals(updateOrganizationDto.getDescription(), updatedOrganizationDto.getDescription());
+    }
+
+    @Test
+    void shouldRemoveOrganizationWithOrganizationId(){
+        OrganizationDto organizationDto = new OrganizationDto();
+        organizationDto.setName("testName");
+        organizationDto.setDescription("testDescription");
+
+        OrganizationDto addedOrg = organizationService.addOrganization(organizationDto);
+
+        OrganizationDto found = organizationService.getOrganizationByOrganizationId(addedOrg.getOrganizationId());
+
+        assertEquals(found.getOrganizationId(), addedOrg.getOrganizationId());
+        assertEquals(found.getName(), addedOrg.getName());
+        assertEquals(found.getDescription(), addedOrg.getDescription());
+
+        boolean isRemoved = organizationService.removeOrganization(addedOrg.getOrganizationId());
+
+        assertTrue(isRemoved);
+
+        found = organizationService.getOrganizationByOrganizationId(addedOrg.getOrganizationId());
+        assertNull(found);
+
+        assertEquals(0, organizationService.getOrganizations().size());
     }
 }
